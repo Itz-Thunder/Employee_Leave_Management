@@ -53,7 +53,8 @@ const LeaveRequestList = () => {
             {leaves.length === 0 ? (
                 <p>No leave requests yet.</p>
             ) : (
-                <table className="w-full table-auto border">
+                <div className=' overflow-x-auto'>
+                    <table className="w-full table-auto border-2 rounded">
                     <thead>
                         <tr className="bg-gray-200">
                             <th className="px-4 py-2">Sr. no.</th>
@@ -102,6 +103,7 @@ const LeaveRequestList = () => {
                         ))}
                     </tbody>
                 </table>
+                </div>
             )}
         </div>
     );
