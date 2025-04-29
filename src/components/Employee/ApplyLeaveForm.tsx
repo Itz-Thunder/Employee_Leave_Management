@@ -1,4 +1,4 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import { v4 as uuidv4 } from 'uuid';
@@ -7,6 +7,13 @@ import { AppDispatch } from '../../redux/store';
 import { applyLeave } from '../../redux/slices/leaveSlice';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+
+interface LeaveFormValues {
+    fromDate: string;
+    noOfDays: string;
+    type: string;
+    reason: string;
+}
 
 const validationSchema = Yup.object({
     fromDate: Yup.string().required('From Date is required'),
@@ -22,16 +29,20 @@ const ApplyLeaveForm = () => {
     const minDate = new Date().toISOString().split('T')[0];
 
     useEffect(() => {
-        axios.get('https://jsonplaceholder.typicode.com/posts/1')
-            .then(res => {
+        axios
+            .get('https://jsonplaceholder.typicode.com/posts/1')
+            .then((res) => {
                 console.log('Fetched:', res.data);
             })
-            .catch(err => {
+            .catch((err) => {
                 console.error('Error:', err);
             });
     }, []);
 
-    const handleSubmit = (values: any, { resetForm }: any) => {
+    const handleSubmit = (
+        values: LeaveFormValues,
+        { resetForm }: FormikHelpers<LeaveFormValues>
+    ) => {
         const newLeave = {
             id: uuidv4(),
             fromDate: values.fromDate,
@@ -53,7 +64,10 @@ const ApplyLeaveForm = () => {
         resetForm();
     };
 
-    const handleFromDateChange = (e: React.ChangeEvent<HTMLInputElement>, values: any) => {
+    const handleFromDateChange = (
+        e: React.ChangeEvent<HTMLInputElement>,
+        values: LeaveFormValues
+    ) => {
         const fromDate = new Date(e.target.value);
         setToDate('');
         if (values.noOfDays) {
@@ -63,7 +77,10 @@ const ApplyLeaveForm = () => {
         }
     };
 
-    const handleNoOfDaysChange = (e: React.ChangeEvent<HTMLInputElement>, values: any) => {
+    const handleNoOfDaysChange = (
+        e: React.ChangeEvent<HTMLInputElement>,
+        values: LeaveFormValues
+    ) => {
         setNoOfDays(e.target.value);
         if (values.fromDate && e.target.value) {
             const fromDate = new Date(values.fromDate);
@@ -91,7 +108,7 @@ const ApplyLeaveForm = () => {
                                 name="fromDate"
                                 className="w-full border p-2 rounded"
                                 min={minDate}
-                                onChange={(e) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     setFieldValue('fromDate', e.target.value);
                                     handleFromDateChange(e, values);
                                 }}
@@ -105,7 +122,7 @@ const ApplyLeaveForm = () => {
                                 type="number"
                                 name="noOfDays"
                                 value={noOfDays}
-                                onChange={(e) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     setFieldValue('noOfDays', e.target.value);
                                     handleNoOfDaysChange(e, values);
                                 }}
@@ -147,7 +164,10 @@ const ApplyLeaveForm = () => {
                             <ErrorMessage name="reason" component="div" className="text-red-600 text-sm" />
                         </div>
 
-                        <button type="submit" className="bg-green-500 mb-4 text-white px-4 py-2 w-full rounded hover:bg-green-600">
+                        <button
+                            type="submit"
+                            className="bg-green-500 mb-4 text-white px-4 py-2 w-full rounded hover:bg-green-600"
+                        >
                             Apply
                         </button>
                     </Form>
