@@ -1,8 +1,7 @@
-import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
-import LoginPage from '../pages/LoginPage';
+import LoginPage from '../pages/Login';
 import EmployeeDashboard from '../pages/EmployeeDashboard';
 import AdminDashboard from '../pages/AdminDashboard';
 

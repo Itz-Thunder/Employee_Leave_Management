@@ -1,4 +1,3 @@
-import React from 'react';
 import ApplyLeaveForm from '../components/Employee/ApplyLeaveForm';
 import LeaveList from '../components/Employee/LeaveList';
 

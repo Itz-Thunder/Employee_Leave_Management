@@ -1,4 +1,3 @@
-import React from 'react';
 import LeaveRequestList from '../components/Admin/LeaveRequestList';
 
 const AdminDashboard = () => {
